@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/members")
@@ -60,5 +61,26 @@ public class MemberController {
     public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
         memberService.deleteMember(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateMemberProfile(@PathVariable Long id, @RequestBody Map<String, String> payload, Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(401).build();
+        }
+        
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+                
+        return memberService.getMemberById(id).map(member -> {
+            if (!isAdmin && !member.getName().equals(authentication.getName())) {
+                return ResponseEntity.status(403).build();
+            }
+            String address = payload.get("address");
+            String phone = payload.get("phone");
+            String birthDate = payload.get("birthDate");
+            memberService.updateProfile(member.getName(), address, phone, birthDate);
+            return ResponseEntity.ok().build();
+        }).orElse(ResponseEntity.notFound().build());
     }
 }

@@ -82,6 +82,18 @@ public class MemberService {
         return memberRepository.findByName(name).isEmpty();
     }
 
+    @Transactional
+    public Member updateProfile(String username, String address, String phone, String birthDateStr) {
+        Member member = memberRepository.findByName(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        member.setAddress(address);
+        member.setPhone(phone);
+        if (birthDateStr != null && !birthDateStr.isEmpty()) {
+            member.setBirthDate(java.time.LocalDate.parse(birthDateStr));
+        }
+        return memberRepository.save(member);
+    }
+
     public Page<Member> getAllMembers(Pageable pageable) {
         return memberRepository.findAll(pageable);
     }

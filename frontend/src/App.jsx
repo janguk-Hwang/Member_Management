@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, Link } from 'react-router-dom';
 import MemberList from './components/MemberList';
 import Login from './components/Login';
 import Signup from './components/Signup';
@@ -23,7 +23,9 @@ function App() {
         <div className="app-container">
             <header className="app-header glass-panel">
                 <div className="logo">
-                    <h1>Member<span className="highlight">Flow</span></h1>
+                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <h1>Member<span className="highlight">Flow</span></h1>
+                    </Link>
                 </div>
                 <div className="auth-nav">
                     {user ? (
