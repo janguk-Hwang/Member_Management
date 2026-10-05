@@ -3,6 +3,7 @@ set -e
 
 echo "=== Building Frontend ==="
 cd frontend
+rm -f package-lock.json
 npm install
 npm run build
 cd ..
