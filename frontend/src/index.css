@@ -503,6 +503,8 @@ button {
 .modal-content {
   width: 90%;
   max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
   padding: 2rem;
   border-radius: 20px;
 }
@@ -518,4 +520,10 @@ button {
   display: flex;
   gap: 1rem;
   margin-top: 2rem;
+}
+
+@media (max-width: 600px) {
+  .address-input-group {
+    flex-direction: column;
+  }
 }
